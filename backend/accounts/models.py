@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 
+from cs_advisory import settings
+
 class MyUser(AbstractUser):
     email = models.EmailField(verbose_name='email', max_length=255, unique=True)
     """
@@ -19,4 +21,11 @@ class MyUser(AbstractUser):
         return self.email
 
 class MyUserProfile(models.Model):
-    pass
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    
+    class Meta:
+        verbose_name_plural = "Profiles"
+
+    def __str__(self):
+        return self.user.email
+    

@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     
     'accounts',
+    'posts',
 
     'rest_framework',
     'corsheaders',
@@ -76,7 +77,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'main.wsgi.application'
+WSGI_APPLICATION = 'cs_advisory.wsgi.application'
 
 DATABASES = {
     'default': {

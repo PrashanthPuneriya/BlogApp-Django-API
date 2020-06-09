@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
-from .models import MyUser
+from .models import MyUser, MyUserProfile
 from django import forms
 
 """
@@ -43,5 +43,6 @@ class MyUserAdmin(UserAdmin):
     list_display = ['email', 'username', 'first_name']
 
 admin.site.register(MyUser, MyUserAdmin)
+admin.site.register(MyUserProfile)
 
 # admin.site.unregister(Group)
