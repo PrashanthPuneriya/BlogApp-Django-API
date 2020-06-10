@@ -12,16 +12,19 @@ UserAdmin defines a formsets-property, later used by UserChangeForm,
 which does not include your special fields.
 """
 
+
 class MyUserCreationForm(UserCreationForm):
     """
     A form that creates a user, with no privileges from the given email, username 
     password1 and password2.
     """
     # Overriding first_name field
-    first_name = forms.CharField(max_length=50, required=True, label='First Name')
+    first_name = forms.CharField(
+        max_length=50, required=True, label='First Name')
+
     class Meta(UserCreationForm.Meta):
         model = MyUser
-        
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         # Defining our own label for password2 field
@@ -36,11 +39,13 @@ class MyUserChangeForm(UserChangeForm):
         model = MyUser
         fields = '__all__'
 
+
 class MyUserAdmin(UserAdmin):
     form = MyUserChangeForm
     add_form = MyUserCreationForm
     model = MyUser
     list_display = ['email', 'username', 'first_name']
+
 
 admin.site.register(MyUser, MyUserAdmin)
 admin.site.register(MyUserProfile)
