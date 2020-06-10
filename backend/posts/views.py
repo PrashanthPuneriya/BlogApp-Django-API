@@ -54,6 +54,9 @@ class PostDetailView(views.APIView):
             if serializer.is_valid(raise_exception=True):
                 serializer.save()
                 return response.Response(data={'success': 'Post has been updated successfully'}, status=status.HTTP_200_OK)
+        except Exception as e:
+            print(e)
+            return response.Response(data={'error': 'Some error has occured'}, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, post_id):
         try:
