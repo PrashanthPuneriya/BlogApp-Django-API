@@ -11,7 +11,7 @@ urlpatterns = [
     # list all posts
     path('', PostAllView.as_view(), name='post-all'),
 
-    path('<int:post_id>/', PostDetailView.as_view(), name='post-detail'),
+    path('<int:post_id>', PostDetailView.as_view(), name='post-detail'),
 
     # create a post, list/delete all user posts
     path('user-posts/', PostUserView.as_view(), name='post-user'),
