@@ -2,6 +2,7 @@ from rest_framework import views, response, permissions, status
 
 from .models import (
     MyUser as User,
+    MyUserProfile as UserProfile
 )
 
 
@@ -20,6 +21,9 @@ class RegisterView(views.APIView):
         password = data["password"]
         password2 = data["password2"]
 
+        github_link = data["github_link"]
+        linkedin_link = data["linkedin_link"]
+
         if email == "" or username == "" or first_name == "" or password == "":
             return response.Response({'error': 'Fill all the required fields'})
         else:
@@ -32,6 +36,9 @@ class RegisterView(views.APIView):
                     else:
                         user = User.objects.create_user(
                             email=email, username=username, password=password, first_name=first_name, last_name=last_name)
+                        profile = UserProfile.objects.create(
+                            user=user, github_link=github_link, linkedin_link=linkedin_link)
+
                         # user.save() -- No need of .save() because of create_user()
                         return response.Response({'success': 'User created successfully'})
             else:
@@ -39,7 +46,6 @@ class RegisterView(views.APIView):
 
 
 class ProfileView(views.APIView):
-    permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request):
         user = request.user

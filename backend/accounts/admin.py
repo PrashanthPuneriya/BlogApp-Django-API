@@ -46,8 +46,11 @@ class MyUserAdmin(UserAdmin):
     model = MyUser
     list_display = ['email', 'username', 'first_name']
 
+class MyUserProfileAdmin(admin.ModelAdmin):
+    model = MyUserProfile
+    list_display = ['user', 'github_link', 'linkedin_link']
 
 admin.site.register(MyUser, MyUserAdmin)
-admin.site.register(MyUserProfile)
+admin.site.register(MyUserProfile, MyUserProfileAdmin)
 
 # admin.site.unregister(Group)
