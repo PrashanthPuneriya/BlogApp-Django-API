@@ -4,7 +4,7 @@ from .models import Post
 from .serializers import PostSerializer
 
 
-class PostListAllView(views.APIView):
+class PostAllView(views.APIView):
     # List all posts
     permission_classes = [permissions.AllowAny]
 
@@ -12,6 +12,10 @@ class PostListAllView(views.APIView):
         qs = Post.objects.all()
         serializer = PostSerializer(qs, many=True)
         return response.Response(data={'posts': serializer.data}, status=status.HTTP_200_OK)
+    
+    def delete(self, request):
+        Post.objects.all().delete()
+        return response.Response(data={'success': 'All posts has been deleted'}, status=status.HTTP_200_OK)
 
 # class PostListUserView(views.APIView):
 
@@ -31,7 +35,7 @@ class PostDetailView(views.APIView):
             serializer = PostSerializer(data=post)
             return response.Response(data=serializer.data, status=status.HTTP_200_OK)
         except Post.DoesNotExist:
-            return response.Response(None, status=status.HTTP_404_NOT_FOUND)
+            return response.Response(data={'error': 'Post doesn\'t exist'}, status=status.HTTP_404_NOT_FOUND)
 
     def post(self, request):
         # Create a post
@@ -64,4 +68,4 @@ class PostDetailView(views.APIView):
             post.delete()
             return response.Response(data={'success': 'Post has been deleted successfully'}, status=status.HTTP_200_OK)
         except Post.DoesNotExist:
-            return response.Response(None, status=status.HTTP_400_BAD_REQUEST)
+            return response.Response(data={'error': 'Post doesn\'t exist'}, status=status.HTTP_400_BAD_REQUEST)
