@@ -16,7 +16,7 @@ class PostListCreateUser(views.APIView):
     # Lists all the posts of the user
 
     def get(self, request, *args, **kwargs):
-        qs = Post.objects.all()
+        qs = Post.objects.all().filter(author=request.user)
         serializer = PostSerializer(qs, many=True)
         return response.Response(data={'posts': serializer.data}, status=status.HTTP_200_OK)
     
