@@ -3,7 +3,7 @@ from rest_framework import views, response, status, permissions
 from rest_framework.decorators import api_view, permission_classes
 
 from .models import Post
-from .serializers import PostSerializer
+from .serializers import PostSerializer, PostDetailSerializer
 
 
 class PostAllView(views.APIView):
@@ -54,10 +54,11 @@ class PostDetailView(views.APIView):
         # Detail view of the post
         try:
             post = Post.objects.get(pk=post_id)
-            serializer = PostSerializer(data=post)
+            serializer = PostDetailSerializer(post)
+            # serializer = PostSerializer(post)
             return response.Response(data=serializer.data, status=status.HTTP_200_OK)
         except Post.DoesNotExist:
-            return response.Response(data={"error": "Post doesn't exist"}, status=status.HTTP_404_NOT_FOUND)
+            return response.Response(data={"error": "Post doesn't exist"}, status=status.HTTP_400_BAD_REQUEST)
 
     def patch(self, request, post_id):
         # PATCH -> Because we are updating only certain fields of the post but not the entire entity
