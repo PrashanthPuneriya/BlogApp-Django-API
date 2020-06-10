@@ -1,12 +1,20 @@
 from django.urls import path
-from .views import PostListAllView, PostDetailView
+from .views import (
+    PostAllView,
+    deleteAllPostsView,
+    PostUserView,
+    PostDetailView,
+)
+
 
 urlpatterns = [
-    # get -> list all posts
-    path('', PostListAllView.as_view(), name='post-list-all'),
-    
-    # get -> list all user posts
-    # path('my-posts/', PostListUserView.as_view(), name='post-list-user'),
+    # list all posts
+    path('', PostAllView.as_view(), name='post-all'),
 
     path('<int:id>/', PostDetailView.as_view(), name='post-detail'),
+
+    # create a post, list/delete all user posts
+    path('post/', PostUserView.as_view(), name='post-user'),
+
+    path('delete-all-posts/', deleteAllPostsView, name='delete-all-posts'),
 ]
