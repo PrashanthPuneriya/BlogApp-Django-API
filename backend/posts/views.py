@@ -3,7 +3,8 @@ from rest_framework import views, response, status, permissions
 from .models import Post
 from .serializers import PostSerializer
 
-class PostListAll(views.APIView):
+
+class PostListAllView(views.APIView):
     # List all posts
     permission_classes = [permissions.AllowAny]
 
@@ -12,19 +13,25 @@ class PostListAll(views.APIView):
         serializer = PostSerializer(qs, many=True)
         return response.Response(data={'posts': serializer.data}, status=status.HTTP_200_OK)
 
-# class PostListUser(views.APIView):
-    
+# class PostListUserView(views.APIView):
+
 #     def get(self, request):
 #         # Lists all the posts of the user
 #         qs = Post.objects.all().filter(author=request.user)
 #         serializer = PostSerializer(qs, many=True)
-#         return response.Response(data={'posts': serializer.data}, status=status.HTTP_200_OK)    
+#         return response.Response(data={'posts': serializer.data}, status=status.HTTP_200_OK)
 
-class PostDetail(views.APIView):
-    
-    def get(self, request, id):
+
+class PostDetailView(views.APIView):
+
+    def get(self, request, post_id):
         # Detail view of the post
-        pass
+        try:
+            post = Post.objects.get(pk=post_id)
+            serializer = PostSerializer(data=post)
+            return response.Response(data=serializer.data, status=status.HTTP_200_OK)
+        except Post.DoesNotExist:
+            return response.Response(None, status=status.HTTP_404_NOT_FOUND)
 
     def post(self, request):
         # Create a post
@@ -37,6 +44,21 @@ class PostDetail(views.APIView):
                 return response.Response(data={'success': 'Post has been created successfully'}, status=status.HTTP_201_CREATED)
         except Exception as e:
             print(e)
-            return response.Response(data={'error': de_serializer.errors}, status=status.HTTP_400_BAD_REQUEST) 
+            return response.Response(data={'error': de_serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
-    
+    def patch(self, request, post_id):
+        # PATCH -> Because we are updating only certain fields of the post but not the entire entity
+        try:
+            post = Post.objects.get(pk=post_id)
+            serializer = PostSerializer(instance=post, data=request.data, partial=True)
+            if serializer.is_valid(raise_exception=True):
+                serializer.save()
+                return response.Response(data={'success': 'Post has been updated successfully'}, status=status.HTTP_200_OK)
+
+    def delete(self, request, post_id):
+        try:
+            post = Post.objects.get(pk=post_id)
+            post.delete()
+            return response.Response(data={'success': 'Post has been deleted successfully'}, status=status.HTTP_200_OK)
+        except Post.DoesNotExist:
+            return response.Response(None, status=status.HTTP_400_BAD_REQUEST)
