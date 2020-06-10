@@ -63,7 +63,6 @@ class PostDetailView(views.APIView):
 
     def patch(self, request, post_id):
         # PATCH -> Because we are updating only certain fields of the post but not the entire entity
-        print("In PATCH")
         try:
             post = Post.objects.get(pk=post_id)
             if(request.user == post.author):
@@ -78,7 +77,6 @@ class PostDetailView(views.APIView):
             return response.Response(data={"error": "Some error has occured"}, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, post_id):
-        print("In delete")
         try:
             post = Post.objects.get(pk=post_id)
             if(request.user == post.author):
