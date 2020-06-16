@@ -59,7 +59,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'cs_advisory.urls'
+ROOT_URLCONF = 'main.urls'
 
 TEMPLATES = [
     {
@@ -77,12 +77,12 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'cs_advisory.wsgi.application'
+WSGI_APPLICATION = 'main.wsgi.application'
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'cs_advisory', # DB name
+        'NAME': 'main', # DB name
         'USER': 'postgres',
         'PASSWORD': get_secret('DB_PASSWORD'),
         'HOST': 'localhost',
